@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "878645308246",
+    "project_id": "myfrstapp-d5fad",
+    "storage_bucket": "myfrstapp-d5fad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:878645308246:android:b05668c3b99e9054c8c4f7",
+        "android_client_info": {
+          "package_name": "com.example.myfrstapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBy2Gvzqi6N8jjuFu6i_2HOny9pAtJHQ1I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
