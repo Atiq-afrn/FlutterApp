@@ -1,6 +1,4 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:myfrstapp/firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // its used for the firebse authentiction of the user login
 //import 'package:myfrstapp/firebase_options.dart';
 
@@ -32,59 +30,57 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("Login")),
-        body: FutureBuilder(
-          future: Firebase.initializeApp(
-            options: DefaultFirebaseOptions.currentPlatform,
+      appBar: AppBar(
+        title: const Text('Home'),
+      ),
+      body: Column(
+        children: [
+          TextField(
+            enableSuggestions: true,
+            autocorrect: true,
+            keyboardType: TextInputType.emailAddress,
+            decoration: const InputDecoration(
+              hintText: "Please enter your email",
+            ),
+            controller: _email,
           ),
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.done:
-                return Column(
-                  children: [
-                    TextField(
-                      enableSuggestions: true,
-                      autocorrect: true,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: const InputDecoration(
-                        hintText: "Please enter your email",
-                      ),
-                      controller: _email,
-                    ),
-                    TextField(
-                      obscureText: true,
-                      enableSuggestions: false,
-                      autocorrect: false,
-                      decoration: const InputDecoration(
-                          hintText: "enter your password"),
-                      controller: _password,
-                    ),
-                    TextButton(
-                      onPressed: () async {
-                        final email = _email.text;
-                        final password = _password.text;
-                        try {
-                          final userCredential = await FirebaseAuth.instance
-                              .createUserWithEmailAndPassword(
-                                  email: email, password: password);
-                          print(userCredential);
-                        } on FirebaseAuthException catch (e) {
-                          if (e.code == 'User is not found') {
-                            print('User is not found');
-                          } else if (e.code == 'Wrong-password') {
-                            print('Wrong password');
-                          }
-                        }
-                      },
-                      child: const Text("Login"),
-                    )
-                  ],
-                );
-              default:
-                return const Text(
-                    'Loading...'); // loading screen when internet connection is not good
-            }
-          },
-        ));
+          TextField(
+            obscureText: true,
+            enableSuggestions: false,
+            autocorrect: false,
+            decoration: const InputDecoration(hintText: "enter your password"),
+            controller: _password,
+          ),
+          TextButton(
+            onPressed: () async {
+              final email = _email.text;
+              final password = _password.text;
+              try {
+                final userCredential = await FirebaseAuth.instance
+                    .createUserWithEmailAndPassword(
+                        email: email, password: password);
+                print(userCredential);
+              } on FirebaseAuthException catch (e) {
+                if (e.code == 'User is not found') {
+                  print('User is not found');
+                } else if (e.code == 'Wrong-password') {
+                  print('Wrong password');
+                }
+              }
+            },
+            child: const Text("Login"),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                '/register/',
+                (route) => false,
+              );
+            },
+            child: const Text('Not Registered yet. Register here'),
+          ),
+        ],
+      ),
+    );
   }
 }
