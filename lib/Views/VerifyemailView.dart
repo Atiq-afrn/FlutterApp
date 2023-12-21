@@ -5,10 +5,10 @@ class _VerifyemailView extends StatefulWidget {
   const _VerifyemailView({Key? key}) : super(key: key);
 
   @override
-  State<_VerifyemailView> createState() => __VerifyemailViewStateState();
+  State<_VerifyemailView> createState() => __VerifyemailView();
 }
 
-class __VerifyemailViewStateState extends State<_VerifyemailView> {
+class __VerifyemailView extends State<_VerifyemailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
