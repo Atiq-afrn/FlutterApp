@@ -38,27 +38,53 @@ class HomePage extends StatelessWidget {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
             final user = FirebaseAuth.instance.currentUser;
-            if (user != null) if (user.emailVerified) {
-              print('Email is verified');
+            if (user != null) {
+              if (user.emailVerified) {
+                print('Email is verified');
+              } else {
+                return const _VerifyemailView();
+              }
             } else {
-              return const _VerifyemailView();
-            }
-            else {
               return const LoginView();
             }
-            return const Text('Done');
 
             // if (user?.emailVerified ?? false) {
             //   return const Text('Done');
             // } else {
-            //   return const _VerifyemailView();
+            //  return const _VerifyemailView();
             // }
-            return const LoginView();
+            return const Text('Done');
 
           default:
             return const CircularProgressIndicator(); // loading screen when internet connection is not good
         }
       },
+    );
+  }
+}
+
+class _VerifyemailView extends StatefulWidget {
+  const _VerifyemailView({Key? key}) : super(key: key);
+
+  @override
+  State<_VerifyemailView> createState() => __VerifyemailView();
+}
+
+class __VerifyemailView extends State<_VerifyemailView> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Verify email')),
+      body: Column(children: [
+        const Text('Please verify your email address '),
+        TextButton(
+          onPressed: () async {
+            final user = FirebaseAuth.instance.currentUser;
+            await user?.sendEmailVerification();
+          },
+          child: const Text('Send email verification'),
+        ),
+      ]),
     );
   }
 }
