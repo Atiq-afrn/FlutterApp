@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:myfrstapp/Views/Register_View.dart';
 import 'package:myfrstapp/Views/login_view.dart';
 import 'package:myfrstapp/firebase_options.dart';
+import 'dart:developer' as Devtools show log;
 // its used for the firebse authentiction of the user login
 
 void main() async {
@@ -38,22 +39,17 @@ class HomePage extends StatelessWidget {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
             final user = FirebaseAuth.instance.currentUser;
+
             if (user != null) {
               if (user.emailVerified) {
-                print('Email is verified');
+                print('My name is Atiq khan');
+                return const NotesView();
               } else {
-                return const _VerifyemailView();
+                return const NotesView();
               }
             } else {
               return const LoginView();
             }
-
-            // if (user?.emailVerified ?? false) {
-            //   return const Text('Done');
-            // } else {
-            //  return const _VerifyemailView();
-            // }
-            return const Text('Done');
 
           default:
             return const CircularProgressIndicator(); // loading screen when internet connection is not good
@@ -63,14 +59,14 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class _VerifyemailView extends StatefulWidget {
-  const _VerifyemailView({Key? key}) : super(key: key);
+class VerifyemailView extends StatefulWidget {
+  const VerifyemailView({Key? key}) : super(key: key);
 
   @override
-  State<_VerifyemailView> createState() => __VerifyemailView();
+  State<VerifyemailView> createState() => __VerifyemailView();
 }
 
-class __VerifyemailView extends State<_VerifyemailView> {
+class __VerifyemailView extends State<VerifyemailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,4 +83,76 @@ class __VerifyemailView extends State<_VerifyemailView> {
       ]),
     );
   }
+}
+
+enum MenuAcion { logout }
+
+class NotesView extends StatefulWidget {
+  const NotesView({super.key});
+
+  @override
+  State<NotesView> createState() => _NotesViewState();
+}
+
+class _NotesViewState extends State<NotesView> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('My Notes'),
+        actions: [
+          PopupMenuButton<MenuAcion>(
+            onSelected: (value) async {
+              switch (value) {
+                case MenuAcion.logout:
+                  final shouldLogout = await showlogOutDialog(context);
+                  if (shouldLogout) {
+                    await FirebaseAuth.instance.signOut();
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      '/login/',
+                      (route) => false,
+                    );
+                  }
+                  Devtools.log(shouldLogout.toString());
+              }
+            },
+            itemBuilder: (context) {
+              return const [
+                PopupMenuItem<MenuAcion>(
+                  value: MenuAcion.logout,
+                  child: Text('Logout'),
+                )
+              ];
+            },
+          )
+        ],
+      ),
+      body: const Text('My name is Atiq khan  and i am a computer engineer'),
+    );
+  }
+}
+
+Future<bool> showlogOutDialog(BuildContext context) {
+  return showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Sing out'),
+          content: const Text('Are you sure you want to logout?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: const Text('Logout'),
+            )
+          ],
+        );
+      }).then((value) => value ?? false);
 }
