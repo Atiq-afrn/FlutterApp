@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:myfrstapp/Views/Register_View.dart';
 import 'package:myfrstapp/Views/login_view.dart';
+import 'package:myfrstapp/constants/routes.dart';
 import 'package:myfrstapp/firebase_options.dart';
 import 'dart:developer' as Devtools show log;
 // its used for the firebse authentiction of the user login
@@ -19,9 +20,9 @@ void main() async {
       theme: ThemeData(primarySwatch: Colors.indigo),
       home: const HomePage(),
       routes: {
-        '/login/': (context) => const LoginView(),
-        '/register/': (context) => const RegisterView(),
-        '/notes/': (context) => const NotesView(),
+        loginRoutes: (context) => const LoginView(),
+        registerRoutes: (context) => const RegisterView(),
+        notesRoutes: (context) => const NotesView(),
       },
     ),
   );
@@ -45,7 +46,7 @@ class HomePage extends StatelessWidget {
               if (user.emailVerified) {
                 return const NotesView();
               } else {
-                return const VerifyemailView();
+                return const LoginView();
               }
             } else {
               return const LoginView();
@@ -109,7 +110,7 @@ class _NotesViewState extends State<NotesView> {
                   if (shouldLogout) {
                     await FirebaseAuth.instance.signOut();
                     Navigator.of(context).pushNamedAndRemoveUntil(
-                      '/login/',
+                      loginRoutes,
                       (route) => false,
                     );
                   }
