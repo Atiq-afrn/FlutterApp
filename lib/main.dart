@@ -21,6 +21,7 @@ void main() async {
       routes: {
         '/login/': (context) => const LoginView(),
         '/register/': (context) => const RegisterView(),
+        '/notes/': (context) => const NotesView(),
       },
     ),
   );
@@ -42,10 +43,9 @@ class HomePage extends StatelessWidget {
 
             if (user != null) {
               if (user.emailVerified) {
-                print('My name is Atiq khan');
                 return const NotesView();
               } else {
-                return const NotesView();
+                return const VerifyemailView();
               }
             } else {
               return const LoginView();
