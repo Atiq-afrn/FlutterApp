@@ -5,6 +5,7 @@ import 'package:myfrstapp/Views/Register_View.dart';
 import 'package:myfrstapp/Views/login_view.dart';
 import 'package:myfrstapp/constants/routes.dart';
 import 'package:myfrstapp/firebase_options.dart';
+import 'Utilites/show_errordialog.dart';
 import 'dart:developer' as Devtools show log;
 // its used for the firebse authentiction of the user login
 

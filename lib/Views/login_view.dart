@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // its used for the firebse authentiction of the user login
-//import 'package:myfrstapp/firebase_options.dart';
-import 'dart:developer' as devtools show log;
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:myfrstapp/Utilites/show_errordialog.dart';
+//import 'dart:developer' as devtools show log;
 
 import 'package:myfrstapp/constants/routes.dart';
 
@@ -31,7 +31,9 @@ class _LoginViewState extends State<LoginView> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
@@ -64,18 +66,38 @@ class _LoginViewState extends State<LoginView> {
                   password: password,
                 );
 
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  notesRoutes,
-                  (route) => false,
-                );
+                if (context.mounted) {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    notesRoutes,
+                    (route) => false,
+                  );
+                }
               } on FirebaseAuthException catch (e) {
                 if (e.code == 'User is not found') {
-                  devtools.log(
-                    'User is not found',
-                  );
+                  if (context.mounted) {
+                    await showErrorDialog(context, 'User not found');
+                  }
+                  // print('user not exist');
                 } else if (e.code == 'Wrong-password') {
-                  devtools.log(
-                    'Wrong password',
+                  if (context.mounted) {
+                    await showErrorDialog(
+                      context,
+                      'Wrong credential',
+                    );
+                  } else {
+                    if (context.mounted) {
+                      await showErrorDialog(
+                        context,
+                        'Error: ${e.code}',
+                      );
+                    }
+                  }
+                }
+              } catch (e) {
+                if (context.mounted) {
+                  await showErrorDialog(
+                    context,
+                    e.toString(),
                   );
                 }
               }
