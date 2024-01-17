@@ -5,7 +5,7 @@ import 'package:myfrstapp/Views/Register_View.dart';
 import 'package:myfrstapp/Views/login_view.dart';
 import 'package:myfrstapp/constants/routes.dart';
 import 'package:myfrstapp/firebase_options.dart';
-import 'Utilites/show_errordialog.dart';
+import 'package:myfrstapp/Views/Verify_email_view.dart';
 import 'dart:developer' as Devtools show log;
 // its used for the firebse authentiction of the user login
 
@@ -24,6 +24,7 @@ void main() async {
         loginRoutes: (context) => const LoginView(),
         registerRoutes: (context) => const RegisterView(),
         notesRoutes: (context) => const NotesView(),
+        verifyemailRoutes: (context) => const VerifyemailView(),
       },
     ),
   );
@@ -61,32 +62,6 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class VerifyemailView extends StatefulWidget {
-  const VerifyemailView({Key? key}) : super(key: key);
-
-  @override
-  State<VerifyemailView> createState() => __VerifyemailView();
-}
-
-class __VerifyemailView extends State<VerifyemailView> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Verify email')),
-      body: Column(children: [
-        const Text('Please verify your email address '),
-        TextButton(
-          onPressed: () async {
-            final user = FirebaseAuth.instance.currentUser;
-            await user?.sendEmailVerification();
-          },
-          child: const Text('Send email verification'),
-        ),
-      ]),
-    );
-  }
-}
-
 enum MenuAcion { logout }
 
 class NotesView extends StatefulWidget {
@@ -110,10 +85,12 @@ class _NotesViewState extends State<NotesView> {
                   final shouldLogout = await showlogOutDialog(context);
                   if (shouldLogout) {
                     await FirebaseAuth.instance.signOut();
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      loginRoutes,
-                      (route) => false,
-                    );
+                    if (context.mounted) {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        loginRoutes,
+                        (route) => false,
+                      );
+                    }
                   }
                   Devtools.log(shouldLogout.toString());
               }
@@ -136,25 +113,26 @@ class _NotesViewState extends State<NotesView> {
 
 Future<bool> showlogOutDialog(BuildContext context) {
   return showDialog<bool>(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Sing out'),
-          content: const Text('Are you sure you want to logout?'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(false);
-              },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(true);
-              },
-              child: const Text('Logout'),
-            )
-          ],
-        );
-      }).then((value) => value ?? false);
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Sing out'),
+        content: const Text('Are you sure you want to logout?'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(false);
+            },
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(true);
+            },
+            child: const Text('Logout'),
+          )
+        ],
+      );
+    },
+  ).then((value) => value ?? false);
 }

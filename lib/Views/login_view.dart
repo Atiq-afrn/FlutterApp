@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:myfrstapp/Utilites/show_errordialog.dart';
+import 'package:myfrstapp/Utilites/show_error_dialog.dart';
+//import 'package:myfrstapp/Utilites/show_error_dialog.dart';
+
 //import 'dart:developer' as devtools show log;
 
 import 'package:myfrstapp/constants/routes.dart';
@@ -75,7 +77,10 @@ class _LoginViewState extends State<LoginView> {
               } on FirebaseAuthException catch (e) {
                 if (e.code == 'User is not found') {
                   if (context.mounted) {
-                    await showErrorDialog(context, 'User not found');
+                    await showErrorDialog(
+                      context,
+                      'User not found',
+                    );
                   }
                   // print('user not exist');
                 } else if (e.code == 'Wrong-password') {

@@ -13,7 +13,7 @@ Future<void> showErrorDialog(
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop(true);
+              Navigator.of(context).pop();
             },
             child: const Text('OK'),
           )
@@ -22,3 +22,5 @@ Future<void> showErrorDialog(
     },
   );
 }
+
+// above code is not working in UI debug is posponded
