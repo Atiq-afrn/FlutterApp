@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myfrstapp/Utilites/show_error_dialog.dart';
 import 'package:myfrstapp/constants/routes.dart';
-import 'dart:developer' as Devtools show log;
+//import 'dart:developer' as Devtools show log;
 //import 'package:flutter/widgets.dart';
 
 class RegisterView extends StatefulWidget {
@@ -72,13 +72,13 @@ class _RegisterViewState extends State<RegisterView> {
                       'Weak Password',
                     );
                   }
-                } else if (e.code == 'The email use by another account') {
+                } else if (e.code == 'email is already in use') {
                   if (context.mounted) {
                     await showErrorDialog(context, 'email is already in use');
                   }
                 } else if (e.code == 'invalid-email') {
                   if (context.mounted) {
-                    await showErrorDialog(context, 'email is invalid');
+                    await showErrorDialog(context, 'invalid email');
                   }
                 } else {
                   if (context.mounted) {

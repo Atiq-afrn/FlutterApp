@@ -48,7 +48,7 @@ class HomePage extends StatelessWidget {
               if (user.emailVerified) {
                 return const NotesView();
               } else {
-                return const LoginView();
+                return const VerifyemailView();
               }
             } else {
               return const LoginView();
@@ -65,7 +65,7 @@ class HomePage extends StatelessWidget {
 enum MenuAcion { logout }
 
 class NotesView extends StatefulWidget {
-  const NotesView({super.key});
+  const NotesView({Key? key}) : super(key: key);
 
   @override
   State<NotesView> createState() => _NotesViewState();
