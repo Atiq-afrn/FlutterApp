@@ -23,13 +23,13 @@ class __VerifyemailViewState extends State<VerifyemailView> {
             'If you have not recieve email verifucation yet press below.'),
         TextButton(
           onPressed: () async {
-            await AuhtService.firebase().sendEmailVerification();
+            await AuthService.firebase().sendEmailVerification();
           },
           child: const Text('Send email verification'),
         ),
         TextButton(
           onPressed: () async {
-            await AuhtService.firebase().logOut();
+            await AuthService.firebase().logOut();
             if (context.mounted) {
               Navigator.of(context).pushNamedAndRemoveUntil(
                 registerRoutes,

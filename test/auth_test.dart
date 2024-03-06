@@ -6,6 +6,7 @@ import 'package:test/test.dart';
 void main() {
   group('Mock Authentication', () {
     final provider = MockAuthprovider();
+
     test('should not initialized to begin with', () {
       expect(provider.isInitialized, false);
     });
@@ -44,8 +45,7 @@ void main() {
       );
       expect(badPassword,
           throwsA(const TypeMatcher<WrongPasswordAuthException>()));
-      final user = await provider.createUser(
-          email: 'atiq@.com', password: 'anypassword');
+      final user = await provider.createUser(email: 'atiq', password: 'khan');
       expect(provider.currentUser, user);
       expect(user.isEmailVerified, false);
     });
@@ -106,7 +106,8 @@ class MockAuthprovider implements AuthProvider {
     if (password == 'atiq') {
       throw WeakPasswordAuthException();
     }
-    const user = AuthUser(isEmailVerified: false);
+
+    const user = AuthUser(email: 'email', isEmailVerified: false);
     _user = user;
     return Future.value(user);
   }
@@ -133,7 +134,7 @@ class MockAuthprovider implements AuthProvider {
     if (user == null) {
       throw UserNotFoundAuthException();
     }
-    const newUser = AuthUser(isEmailVerified: true);
+    const newUser = AuthUser(email: 'email', isEmailVerified: true);
     _user = newUser;
   }
 }

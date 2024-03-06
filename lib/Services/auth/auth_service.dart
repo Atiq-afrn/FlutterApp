@@ -2,11 +2,11 @@ import 'package:myfrstapp/Services/auth/auth_user.dart';
 import 'package:myfrstapp/Services/auth_provider.dart';
 import 'package:myfrstapp/Services/firebase_auth_provider.dart';
 
-class AuhtService implements AuthProvider {
+class AuthService implements AuthProvider {
   final AuthProvider provider;
 
-  const AuhtService({required this.provider});
-  factory AuhtService.firebase() => AuhtService(
+  const AuthService({required this.provider});
+  factory AuthService.firebase() => AuthService(
         provider: FirebaseAuthProvider(),
       );
 
