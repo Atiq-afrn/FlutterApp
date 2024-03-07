@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:myfrstapp/Services/auth/auth_service.dart';
+import 'package:myfrstapp/Views/notes/new_notes_view.dart';
 import 'package:myfrstapp/Views/register_view.dart';
 import 'package:myfrstapp/Views/login_view.dart';
-import 'package:myfrstapp/Views/notes_view.dart';
+import 'package:myfrstapp/Views/notes/notes_view.dart';
 import 'package:myfrstapp/constants/routes.dart';
 import 'package:myfrstapp/Views/Verify_email_view.dart';
+//import 'package:path/path.dart';
 
 // its used for the firebse authentiction of the user login
 
@@ -20,6 +22,7 @@ void main() async {
         registerRoutes: (context) => const RegisterView(),
         notesRoutes: (context) => const NotesView(),
         verifyemailRoutes: (context) => const VerifyemailView(),
+        newNotesRoutes: (context) => const NewNotesView(),
       },
     ),
   );
