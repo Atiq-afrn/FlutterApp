@@ -228,7 +228,9 @@ class NotesService {
   Future<void> _ensureDataBaseIsOpen() async {
     try {
       await open();
-    } on DatabaseAlreadyOpenException {}
+    } on DatabaseAlreadyOpenException {
+      //empty
+    }
   }
 
   Future<void> open() async {
@@ -324,7 +326,7 @@ const creatUserTable = '''CREATE TABLE IF NOT EXISTS "user"   (
        ''';
 
 const createNotesTable = ''' CREATE TABLE  IF NOT EXISTS "notes" (
-	"id"	INTEGER NOT NULL COLLATE UTF16CI,
+	"id"	INTEGER NOT NULL,
 	"user_id"	INTEGER NOT NULL UNIQUE,
 	"Text"	TEXT NOT NULL,
 	"is_synced_with_cloud"	INTEGER NOT NULL DEFAULT 0,
