@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:myfrstapp/Services/auth/auth_service.dart';
 import 'package:myfrstapp/Services/crud/service_notes.dart';
+import 'package:myfrstapp/Utilites/logout_dialog.dart';
+import 'package:myfrstapp/Views/notes/notes_list_view.dart';
 import 'package:myfrstapp/constants/routes.dart';
 import 'package:myfrstapp/enums/menu.dart';
 
@@ -23,7 +25,7 @@ class _NotesViewState extends State<NotesView> {
     super.initState();
   }
 
-  // @override
+  @override
   // void dispose() {
   //   _notesService.close();
   //   super.dispose();
@@ -83,20 +85,11 @@ class _NotesViewState extends State<NotesView> {
                           if (snapshot.hasData) {
                             final allNotes =
                                 snapshot.data as List<DataBaseNotes>;
-                            return ListView.builder(
-                              itemCount: allNotes.length,
-                              itemBuilder: (context, index) {
-                                final note = allNotes[index];
-                                return ListTile(
-                                  title: Text(
-                                    note.text,
-                                    maxLines: 1,
-                                    softWrap: true,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                );
-                              },
-                            );
+                            return NotesViewList(
+                                notes: allNotes,
+                                onDelete: (notes) async {
+                                  await _notesService.deleteNote(id: notes.id);
+                                });
                           } else {
                             return const CircularProgressIndicator();
                           }
@@ -114,30 +107,4 @@ class _NotesViewState extends State<NotesView> {
 
 class Devtools {
   static void log(String string) {}
-}
-
-Future<bool> showlogOutDialog(BuildContext context) {
-  return showDialog<bool>(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: const Text('Sing out'),
-        content: const Text('Are you sure you want to logout?'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(false);
-            },
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(true);
-            },
-            child: const Text('Logout'),
-          )
-        ],
-      );
-    },
-  ).then((value) => value ?? false);
 }
